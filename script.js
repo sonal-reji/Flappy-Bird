@@ -1,10 +1,13 @@
 let boardWidth = 360; 
 let boardHeight = 640; 
 let backgroundImg = new Image(); 
+let audio = new Audio();
 backgroundImg.src = "./Images/flappybirdbg.png"; 
 let inputLocked = false; 
-
+let jose =["./Jose/1.png","./Jose/2.png","./Jose/3.png","./Jose/4.png"]
+let sound =["./Audio/aiva.mp3","./Audio/nice.mp3","./Audio/goated.mp3","./Audio/moonji.mp3","./Audio/vattada.mp3","./Audio/adhyayitta immathiri.mp3",]
 document.addEventListener("keydown", handleKeyDown); 
+document.addEventListener("click", handleKeyDown); 
 
 let GAME_STATE = {
     MENU: "menu",
@@ -28,7 +31,7 @@ let logo = {
 }; 
 
 let flappyBirdTextImg = new Image();
-flappyBirdTextImg.src = "./Images/flappyBirdLogo.png";
+flappyBirdTextImg.src = "./Images/pojologo.png";
 
 let gameOverImg = new Image(); 
 gameOverImg.src = "./Images/flappy-gameover.png";
@@ -36,16 +39,16 @@ gameOverImg.src = "./Images/flappy-gameover.png";
 let bird = {
     x: 50,
     y: boardHeight / 2,
-    width: 40,
-    height: 30
+    width: 100,
+    height: 100
 }
 
 let velocityY = 0;
-let velocityX = -2;
+let velocityX = -4;
 let gravity = 0.5; 
 let birdY = boardHeight / 2; 
-let pipeWidth = 50; 
-let pipeGap = 200; 
+let pipeWidth = 60; 
+let pipeGap = 250; 
 let pipeArray = []; 
 let pipeIntervalId; 
 
@@ -76,6 +79,8 @@ function createPipes() {
         passed: false
     };
     pipeArray.push(topPipe, bottomPipe); 
+        ; 
+    
 }
 
 window.onload = function() {
@@ -85,7 +90,7 @@ window.onload = function() {
     context = board.getContext("2d"); 
 
     birdImg = new Image(); 
-    birdImg.src = "./Images/flappybird.png"; 
+    birdImg.src = jose[0]; 
 
     topPipeImg = new Image();
     topPipeImg.src = "./Images/toppipe.png"; 
@@ -94,7 +99,11 @@ window.onload = function() {
     bottomPipeImg.src = "./Images/bottompipe.png"; 
 
     playButtonImg = new Image(); 
-    playButtonImg.src = "./Images/flappyBirdPlayButton.png"; 
+    playButtonImg.src = "./Images/playbutton.png"; 
+    playButton.height ="200"
+    playButton.width ="200"
+    playButton.x = "90"
+    playButton.y = "230"
 
     requestAnimationFrame(update); 
 }
@@ -145,6 +154,11 @@ function renderGame() {
 
         if(!pipe.passed && bird.x > pipe.x + pipe.width) {
             score += 0.5;
+            if(Number.isInteger(score)){
+               birdImg.src = jose[Math.floor(Math.random()* 4)]; 
+                audio.src = sound[Math.floor(Math.random()* 3)];
+                audio.play()
+            }
             pipe.passed = true;
         }
 
@@ -170,6 +184,7 @@ function renderGameOver() {
         let x = (boardWidth - imgWidth) / 2; 
         let y = boardHeight / 3;
 
+        audio.src = sound[3];
         context.drawImage(gameOverImg, x, y, imgWidth, imgHeight); 
 
         let scoreText = `Your score: ${Math.floor(score)}`; 
@@ -188,20 +203,22 @@ function renderGameOver() {
 function handleKeyDown(e) {
     if(inputLocked) return; 
 
-    if(e.code === "Space") {
+    if(e.code === "Space" ||e.code === "click" ) {
         if(currentState === GAME_STATE.MENU) {
             startGame(); 
         } else if(currentState === GAME_STATE.GAME_OVER) {
             resetGame();
             currentState = GAME_STATE.MENU;
         } else if(currentState === GAME_STATE.PLAYING) {
-            velocityY = -6;
+            velocityY = -10;
         }
     }
 }
 
 function startGame() {
     currentState = GAME_STATE.PLAYING; 
+    audio.src = sound[5];
+    audio.play();
     bird.y = birdY; 
     velocityY = 0; 
     pipeArray = []; 
