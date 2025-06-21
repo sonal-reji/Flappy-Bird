@@ -1,3 +1,4 @@
+
 body {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
@@ -6,4 +7,26 @@ body {
 #board {
     background-image: url("./Images/flappybirdbg.png");
     cursor: default;
+}
+#poster{
+    overflow: hidden;
+    background-image: url("./Jose/bg.jpg");
+    background-size:150px;
+    width: 360px;
+    height: 100px;
+    display: flex;
+
+}
+.image{
+    height: 70px;
+    width: 70px;
+}
+h1{
+    font-size: 1.5em;
+}
+#cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
