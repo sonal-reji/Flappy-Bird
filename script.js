@@ -4,7 +4,7 @@ let backgroundImg = new Image();
 let audio = new Audio();
 backgroundImg.src = "./Images/flappybirdbg.png"; 
 let inputLocked = false; 
-let jose =["./Jose/1.png","./Jose/2.png","./Jose/3.png","./Jose/4.png"]
+let jose =["./Jose/1.png","./Jose/2.png","./Jose/3.png","./Jose/4.png","./Jose/5.png"]
 let sound =["./Audio/aiva.mp3","./Audio/nice.mp3","./Audio/goated.mp3","./Audio/moonji.mp3","./Audio/vattada.mp3","./Audio/adhyayitta immathiri.mp3",]
 document.addEventListener("keydown", handleKeyDown); 
 document.addEventListener("click", handleClick);
@@ -165,7 +165,7 @@ function renderGame(deltaTime) {
         if (!pipe.passed && bird.x > pipe.x + pipe.width) {
             score += 0.5;
             if (Number.isInteger(score)) {
-                birdImg.src = jose[Math.floor(Math.random() * 4)];
+                birdImg.src = jose[Math.floor(Math.random() * 5)];
                 audio.src = sound[Math.floor(Math.random() * 4)];
                 audio.play();
             }
