@@ -9,6 +9,7 @@ let sound =["./Audio/aiva.mp3","./Audio/nice.mp3","./Audio/goated.mp3","./Audio/
 document.addEventListener("keydown", handleKeyDown); 
 document.addEventListener("click", handleClick);
 document.addEventListener("touchstart", handleClick);
+let lastTime = 0;
 
 
 let GAME_STATE = {
@@ -46,13 +47,13 @@ let bird = {
 }
 
 let velocityY = 0;
-let velocityX = -4;
+let velocityX = -6;
 let gravity = 0.5; 
 let birdY = boardHeight / 2; 
 let pipeWidth = 60; 
-let pipeGap = 250; 
+let pipeGap = 280; 
 let pipeArray = []; 
-let pipeIntervalId; 
+let pipeIntervalId = 1; 
 
 function placePipes() {
     createPipes();
@@ -110,18 +111,25 @@ window.onload = function() {
     requestAnimationFrame(update); 
 }
 
-function update() {
-    requestAnimationFrame(update); 
-    context.clearRect(0,0, board.width, board.height); 
+function update(timestamp) {
+    requestAnimationFrame(update);
 
-    if(currentState === GAME_STATE.MENU) {
-        renderMenu(); 
-    } else if(currentState === GAME_STATE.PLAYING) {
-        renderGame(); 
-    } else if(currentState === GAME_STATE.GAME_OVER) {
-        renderGameOver(); 
+    let deltaTime = (timestamp - lastTime) / 1000; // in seconds
+    lastTime = timestamp;
+
+    if (!deltaTime) return;
+
+    context.clearRect(0, 0, board.width, board.height);
+
+    if (currentState === GAME_STATE.MENU) {
+        renderMenu();
+    } else if (currentState === GAME_STATE.PLAYING) {
+        renderGame(deltaTime);
+    } else if (currentState === GAME_STATE.GAME_OVER) {
+        renderGameOver();
     }
 }
+
 
 function renderMenu() {
     if(backgroundImg.complete) {
@@ -139,45 +147,46 @@ function renderMenu() {
     }
 }
 
-function renderGame() {
-    velocityY += gravity;
-    bird.y = Math.max(bird.y + velocityY, 0); 
-    context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height); 
+function renderGame(deltaTime) {
+    velocityY += gravity * deltaTime * 60;
+    bird.y = Math.max(bird.y + velocityY * deltaTime * 60, 0);
+    context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 
-    if(bird.y > board.height) {
+    if (bird.y > board.height) {
         currentState = GAME_STATE.GAME_OVER;
     }
 
-    for(let i = 0; i < pipeArray.length; i++) {
+    for (let i = 0; i < pipeArray.length; i++) {
         let pipe = pipeArray[i];
-        pipe.x += velocityX;
+        pipe.x += velocityX * deltaTime * 60;
 
-        context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height); 
+        context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height);
 
-        if(!pipe.passed && bird.x > pipe.x + pipe.width) {
+        if (!pipe.passed && bird.x > pipe.x + pipe.width) {
             score += 0.5;
-            if(Number.isInteger(score)){
-               birdImg.src = jose[Math.floor(Math.random()* 4)]; 
-                audio.src = sound[Math.floor(Math.random()* 3)];
-                audio.play()
+            if (Number.isInteger(score)) {
+                birdImg.src = jose[Math.floor(Math.random() * 4)];
+                audio.src = sound[Math.floor(Math.random() * 4)];
+                audio.play();
             }
             pipe.passed = true;
         }
 
-        if(detectCollision(bird, pipe)) {
+        if (detectCollision(bird, pipe)) {
             currentState = GAME_STATE.GAME_OVER;
         }
     }
 
-    while(pipeArray.length > 0 && pipeArray[0].x < -pipeWidth) {
+    while (pipeArray.length > 0 && pipeArray[0].x < -pipeWidth) {
         pipeArray.shift();
     }
 
-    context.fillStyle = "white"; 
-    context.font = "45px sans-serif"; 
-    context.textAlign = "left"; 
+    context.fillStyle = "white";
+    context.font = "45px sans-serif";
+    context.textAlign = "left";
     context.fillText(score, 5, 45);
 }
+
 
 function renderGameOver() {
     if(gameOverImg.complete) {
@@ -186,7 +195,6 @@ function renderGameOver() {
         let x = (boardWidth - imgWidth) / 2; 
         let y = boardHeight / 3;
 
-        audio.src = sound[3];
         context.drawImage(gameOverImg, x, y, imgWidth, imgHeight); 
 
         let scoreText = `Your score: ${Math.floor(score)}`; 
@@ -225,7 +233,7 @@ function handleClick() {
         resetGame();
         currentState = GAME_STATE.MENU;
     } else if (currentState === GAME_STATE.PLAYING) {
-        velocityY = -10;
+        velocityY = -7;
     }
 }
 
