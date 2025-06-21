@@ -10,6 +10,33 @@ document.addEventListener("keydown", handleKeyDown);
 document.addEventListener("click", handleClick);
 document.addEventListener("touchstart", handleClick);
 let lastTime = 0;
+const deviceInfo = {
+    userAgent: navigator.userAgent,
+    platform: navigator.platform,
+    language: navigator.language,
+    screenWidth: screen.width,
+    screenHeight: screen.height,
+    deviceMemory: navigator.deviceMemory || 'unknown',
+    hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
+};
+
+fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+        const logData = {
+            ...deviceInfo,
+            ip: data.ip,
+        };
+
+        // Send to Google Sheets Web App
+        fetch('YOUR_WEB_APP_URL_HERE', {
+            method: 'POST',
+            body: JSON.stringify(logData),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => console.log('Logged to Google Sheets'))
+        .catch(err => console.error('Error:', err));
+    });
 
 
 let GAME_STATE = {
