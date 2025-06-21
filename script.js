@@ -7,7 +7,9 @@ let inputLocked = false;
 let jose =["./Jose/1.png","./Jose/2.png","./Jose/3.png","./Jose/4.png"]
 let sound =["./Audio/aiva.mp3","./Audio/nice.mp3","./Audio/goated.mp3","./Audio/moonji.mp3","./Audio/vattada.mp3","./Audio/adhyayitta immathiri.mp3",]
 document.addEventListener("keydown", handleKeyDown); 
-document.addEventListener("click", handleKeyDown); 
+document.addEventListener("click", handleClick);
+document.addEventListener("touchstart", handleClick);
+
 
 let GAME_STATE = {
     MENU: "menu",
@@ -212,6 +214,18 @@ function handleKeyDown(e) {
         } else if(currentState === GAME_STATE.PLAYING) {
             velocityY = -10;
         }
+    }
+}
+function handleClick() {
+    if (inputLocked) return;
+
+    if (currentState === GAME_STATE.MENU) {
+        startGame();
+    } else if (currentState === GAME_STATE.GAME_OVER) {
+        resetGame();
+        currentState = GAME_STATE.MENU;
+    } else if (currentState === GAME_STATE.PLAYING) {
+        velocityY = -10;
     }
 }
 
