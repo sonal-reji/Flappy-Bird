@@ -46,13 +46,13 @@ let bird = {
 }
 
 let velocityY = 0;
-let velocityX = -4;
+let velocityX = -8;
 let gravity = 0.5; 
 let birdY = boardHeight / 2; 
 let pipeWidth = 60; 
-let pipeGap = 250; 
+let pipeGap = 280; 
 let pipeArray = []; 
-let pipeIntervalId; 
+let pipeIntervalId = 1; 
 
 function placePipes() {
     createPipes();
@@ -158,7 +158,7 @@ function renderGame() {
             score += 0.5;
             if(Number.isInteger(score)){
                birdImg.src = jose[Math.floor(Math.random()* 4)]; 
-                audio.src = sound[Math.floor(Math.random()* 3)];
+                audio.src = sound[Math.floor(Math.random()* 4)];
                 audio.play()
             }
             pipe.passed = true;
@@ -186,7 +186,6 @@ function renderGameOver() {
         let x = (boardWidth - imgWidth) / 2; 
         let y = boardHeight / 3;
 
-        audio.src = sound[3];
         context.drawImage(gameOverImg, x, y, imgWidth, imgHeight); 
 
         let scoreText = `Your score: ${Math.floor(score)}`; 
@@ -225,7 +224,7 @@ function handleClick() {
         resetGame();
         currentState = GAME_STATE.MENU;
     } else if (currentState === GAME_STATE.PLAYING) {
-        velocityY = -10;
+        velocityY = -7;
     }
 }
 
