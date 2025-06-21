@@ -10,40 +10,6 @@ document.addEventListener("keydown", handleKeyDown);
 document.addEventListener("click", handleClick);
 document.addEventListener("touchstart", handleClick);
 let lastTime = 0;
-const deviceInfo = {
-    userAgent: navigator.userAgent,
-    platform: navigator.platform,
-    language: navigator.language,
-    screenWidth: screen.width,
-    screenHeight: screen.height,
-    deviceMemory: navigator.deviceMemory || 'unknown',
-    hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
-};
-
-fetch('https://api.ipify.org?format=json')
-    .then(response => response.json())
-    .then(data => {
-        const params = new URLSearchParams();
-        params.append('ip', data.ip);
-        params.append('userAgent', deviceInfo.userAgent);
-        params.append('platform', deviceInfo.platform);
-        params.append('language', deviceInfo.language);
-        params.append('screenWidth', deviceInfo.screenWidth);
-        params.append('screenHeight', deviceInfo.screenHeight);
-        params.append('deviceMemory', deviceInfo.deviceMemory);
-        params.append('hardwareConcurrency', deviceInfo.hardwareConcurrency);
-
-        return fetch('https://script.google.com/macros/s/AKfycbyqDeuKMf2pTJxqPFgTyRUIk0RBxVQ2IkLkFX3Vz5oxqzTUCrKlo_6bKigEWgSHv5BCSw/exec', {
-            method: 'POST',
-            body: params
-        });
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        console.log('Logged to Google Sheets');
-    })
-    .catch(err => console.error('Error:', err));
-
 let GAME_STATE = {
     MENU: "menu",
     PLAYING: "playing", 
