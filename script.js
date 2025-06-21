@@ -46,7 +46,7 @@ let bird = {
 }
 
 let velocityY = 0;
-let velocityX = -5;
+let velocityX = -8;
 let gravity = 0.5; 
 let birdY = boardHeight / 2; 
 let pipeWidth = 60; 
