@@ -1,3 +1,4 @@
+
 let boardWidth = 360; 
 let boardHeight = 640; 
 let backgroundImg = new Image(); 
@@ -7,10 +8,7 @@ let inputLocked = false;
 let jose =["./Jose/1.png","./Jose/2.png","./Jose/3.png","./Jose/4.png"]
 let sound =["./Audio/aiva.mp3","./Audio/nice.mp3","./Audio/goated.mp3","./Audio/moonji.mp3","./Audio/vattada.mp3","./Audio/adhyayitta immathiri.mp3",]
 document.addEventListener("keydown", handleKeyDown); 
-document.addEventListener("click", handleClick);
-document.addEventListener("touchstart", handleClick);
-let lastTime = 0;
-
+document.addEventListener("click", handleKeyDown); 
 
 let GAME_STATE = {
     MENU: "menu",
@@ -25,7 +23,6 @@ let playButton = {
     width: 115,
     height: 64
 };
-
 let logo = {
     x: boardWidth / 2 - 300 / 2,
     y: boardHeight / 4,

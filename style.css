@@ -11,7 +11,7 @@ body {
 #poster{
     overflow: hidden;
     background-image: url("./Jose/bg.jpg");
-    background-size:150px;
+    background-size:100px;
     width: 360px;
     height: 100px;
     display: flex;
