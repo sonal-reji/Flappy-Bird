@@ -23,21 +23,26 @@ const deviceInfo = {
 fetch('https://api.ipify.org?format=json')
     .then(response => response.json())
     .then(data => {
-        const logData = {
-            ...deviceInfo,
-            ip: data.ip,
-        };
+        const params = new URLSearchParams();
+        params.append('ip', data.ip);
+        params.append('userAgent', deviceInfo.userAgent);
+        params.append('platform', deviceInfo.platform);
+        params.append('language', deviceInfo.language);
+        params.append('screenWidth', deviceInfo.screenWidth);
+        params.append('screenHeight', deviceInfo.screenHeight);
+        params.append('deviceMemory', deviceInfo.deviceMemory);
+        params.append('hardwareConcurrency', deviceInfo.hardwareConcurrency);
 
-        // Send to Google Sheets Web App
-        fetch('https://script.google.com/macros/s/AKfycbyqDeuKMf2pTJxqPFgTyRUIk0RBxVQ2IkLkFX3Vz5oxqzTUCrKlo_6bKigEWgSHv5BCSw/exec', {
+        return fetch('https://script.google.com/macros/s/AKfycbyqDeuKMf2pTJxqPFgTyRUIk0RBxVQ2IkLkFX3Vz5oxqzTUCrKlo_6bKigEWgSHv5BCSw/exec', {
             method: 'POST',
-            body: JSON.stringify(logData),
-            headers: { 'Content-Type': 'application/json' }
-        })
-        .then(response => console.log('Logged to Google Sheets'))
-        .catch(err => console.error('Error:', err));
-    });
-
+            body: params
+        });
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        console.log('Logged to Google Sheets');
+    })
+    .catch(err => console.error('Error:', err));
 
 let GAME_STATE = {
     MENU: "menu",
