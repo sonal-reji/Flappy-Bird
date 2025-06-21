@@ -29,7 +29,7 @@ fetch('https://api.ipify.org?format=json')
         };
 
         // Send to Google Sheets Web App
-        fetch('YOUR_WEB_APP_URL_HERE', {
+        fetch('https://script.google.com/macros/s/AKfycbyqDeuKMf2pTJxqPFgTyRUIk0RBxVQ2IkLkFX3Vz5oxqzTUCrKlo_6bKigEWgSHv5BCSw/exec', {
             method: 'POST',
             body: JSON.stringify(logData),
             headers: { 'Content-Type': 'application/json' }
